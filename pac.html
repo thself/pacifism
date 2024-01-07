@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feminism</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #nameBox {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    #inputBox, #displayBox {
+      width: 300px;
+      height: 150px;
+      resize: none;
+    }
+
+    #inputBox {
+      margin-right: 10px;
+    }
+
+    #displayBox {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="nameBox">
+    <label for="name">Creator:</label>
+    <input type="text" id="name" placeholder="Enter your name">
+  </div>
+
+  <div>
+    <h1>Feminism</h1>
+	<p>Hint: imagine you create what you type<p>
+    <textarea id="inputBox" placeholder="Create"></textarea>
+    <button onclick="displayText()">Create</button>
+    <div id="displayBox"></div>
+  </div>
+
+  <script>
+    function displayText() {
+      var inputText = document.getElementById('inputBox').value.trim();
+      var name = document.getElementById('name').value.trim();
+      var displayBox = document.getElementById('displayBox');
+
+      if (inputText !== '') {
+        var newText = inputText + "<br>" + "    with"+ "<br>_________________________________" + "<br>";
+        displayBox.innerHTML += newText;
+        document.getElementById('inputBox').value = '';
+      }
+    }
+  </script>
+
+</body>
+</html>
