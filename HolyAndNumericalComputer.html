@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Buttons</title>
+  <style>
+    /* Style for the circular buttons */
+    .circle-button {
+      width: 50px;
+      height: 50px;
+      border: 2px solid black;
+      border-radius: 50%;
+      margin: 10px;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    /* Individual button colors */
+    #button1 {
+      background: url('https://i.imgur.com/JUxfmXe.jpg') center center no-repeat;
+	  background-size: cover;
+    }
+
+    #button2 {
+      background: url('https://i.imgur.com/5wNTaVt.jpg') center center no-repeat;
+	  background-size: cover;
+    }
+
+    #button3 {
+      background: url('https://i.imgur.com/IOFN8XO.jpg') center center no-repeat;
+	  background-size: cover;
+    }
+
+    #button4 {
+      background: url('https://i.imgur.com/DNJO29v.jpg') center center no-repeat;
+	  background-size: cover;
+    }
+
+    /* Style for the canvas */
+    #myCanvas {
+      border: 2px solid black;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<h1>Refresh page to clear!</h1>
+<!-- Canvas -->
+<canvas id="myCanvas" width="450" height="450"></canvas> 
+<!-- TODO: customise canvas width&height-->
+<div></div>
+<!-- Buttons -->
+<div id="button1" class="circle-button" onclick="changeCanvasPartialFill()"></div>
+<div id="button2" class="circle-button" onclick="drawRandomLine()"></div>
+<div id="button3" class="circle-button" onclick="drawCurvyLine()"></div>
+<div id="button4" class="circle-button" onclick="drawRandomCircle()"></div>
+
+
+<script>
+  // Function to change canvas color with partial fill
+  function changeCanvasPartialFill() {
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+
+    // Clear the canvas
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Loop through each pixel on the canvas
+    for (var x = 0; x < canvas.width; x++) {
+      for (var y = 0; y < canvas.height; y++) {
+        // Generate a random number between 0 and 1
+        var randomValue = Math.random();
+
+        // Decide whether to fill the pixel based on a probability (e.g., 30% chance to fill)
+        if (randomValue <= 0.3) {
+          var randomRed = Math.floor(Math.random() * 256);
+          var randomGreen = Math.floor(Math.random() * 256);
+          var randomBlue = Math.floor(Math.random() * 256);
+
+          // Set the pixel color
+          context.fillStyle = `rgb(${randomRed},${randomGreen},${randomBlue})`;
+          context.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+  }
+  // Function to draw a random line on the canvas
+  function drawRandomLine() {
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+
+    // Clear the canvas
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Generate random position and length for the line
+    var startX = Math.random() * canvas.width;
+    var startY = Math.random() * canvas.height;
+    var length = Math.random() * 100; // Adjust the maximum length as needed
+    var angle = Math.random() * (2 * Math.PI); // Random angle in radians
+
+    // Calculate end coordinates based on angle and length
+    var endX = startX + length * Math.cos(angle);
+    var endY = startY + length * Math.sin(angle);
+
+    // Draw the line
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+  }
+  function drawRandomColoredLine() {
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+
+    // Clear the canvas
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Generate random position and length for the line
+    var startX = Math.random() * canvas.width;
+    var startY = Math.random() * canvas.height;
+    var length = Math.random() * 100; // Adjust the maximum length as needed
+    var angle = Math.random() * (2 * Math.PI); // Random angle in radians
+
+    // Calculate end coordinates based on angle and length
+    var endX = startX + length * Math.cos(angle);
+    var endY = startY + length * Math.sin(angle);
+
+    // Generate a random color
+    var randomColor = getRandomColor();
+
+    // Set the line color
+    context.strokeStyle = randomColor;
+    // Draw the line
+    context.beginPath();
+    context.moveTo(startX, startY);
+    context.lineTo(endX, endY);
+    context.stroke();
+  }
+  function drawCurvyLine() {
+	// Clear the canvas
+	//context.clearRect(0, 0, canvas.width, canvas.height);
+
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+	
+	// Generate a random color
+	var randomColor = getRandomColor();
+
+	// Set the line color
+	context.strokeStyle = randomColor;
+	// Set the line style
+	//context.strokeStyle = '#000';
+	context.lineWidth = Math.random();
+
+	// Move to a random starting point
+	let startX = Math.random() * canvas.width;
+	let startY = Math.random() * canvas.height;
+	context.moveTo(startX, startY);
+
+	// Draw random curves
+	for (let i = 0; i < Math.random() * 10 + 5; i++) {
+		// Calculate control points and end point
+		const controlX1 = Math.random() * canvas.width;
+		const controlY1 = Math.random() * canvas.height;
+		const controlX2 = Math.random() * canvas.width;
+		const controlY2 = Math.random() * canvas.height;
+		const endX = Math.random() * canvas.width;
+		const endY = Math.random() * canvas.height;
+
+		// Draw the curve
+		context.bezierCurveTo(controlX1, controlY1, controlX2, controlY2, endX, endY);
+	}
+
+	// Stroke the line
+	context.stroke();
+	}
+
+  // Function to generate a random color
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  // Call the function to draw a random colored line when the page loads
+  //window.onload = drawRandomColoredLine;
+
+  // Function to draw a circle in a random position on the canvas
+  function drawRandomCircle() {
+    var canvas = document.getElementById("myCanvas");
+    var context = canvas.getContext("2d");
+
+    // Clear the canvas
+    //context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Generate random position for the circle
+    var centerX = Math.random() * canvas.width;
+    var centerY = Math.random() * canvas.height;
+
+    // Generate random radius for the circle
+    var radius = Math.random() * 50; // Adjust the maximum radius as needed
+
+    // Generate random color for the circle
+    var randomColor = getRandomColor();
+    context.fillStyle = randomColor;
+
+    // Draw the circle
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    context.fill();
+  }
+
+  // Call the function to draw a random circle when the page loads
+  //window.onload = drawRandomCircle;
+</script>
+</body>
+</html>
